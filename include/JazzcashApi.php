@@ -27,14 +27,14 @@ class JazzcashApi
 	
 	
     function __construct()
-	{
+    {
         // Set API key
         $this->merchant_id 		= JAZZCASH_MERCHANT_ID;
-		$this->password 		= JAZZCASH_PASSWORD;
+		$this->password 	= JAZZCASH_PASSWORD;
 		$this->integrity_salt 	= JAZZCASH_INTEGERITY_SALT;
-		$this->currency 		= JAZZCASH_CURRENCY_CODE;
-		$this->language 		= JAZZCASH_LANGUAGE;
-		$this->post_url 		= JAZZCASH_HTTP_POST_URL;
+		$this->currency 	= JAZZCASH_CURRENCY_CODE;
+		$this->language 	= JAZZCASH_LANGUAGE;
+		$this->post_url 	= JAZZCASH_HTTP_POST_URL;
     } 
  
    
@@ -82,27 +82,27 @@ class JazzcashApi
 
 		//Transaction Array 
 		$data_array =  array(
-			"pp_Language" 			=> $this->language,
-			"pp_MerchantID" 		=> $this->merchant_id,
-			"pp_SubMerchantID" 		=> "",
-			"pp_Password" 			=> $this->password,
-			"pp_BankID" 			=> "",
-			"pp_ProductID" 			=> "",
-			"pp_TxnRefNo" 			=> $pp_TxnRefNo,
-			"pp_Amount" 			=> $pp_Amount,
-			"pp_TxnCurrency" 		=> $this->currency,
-			"pp_TxnDateTime" 		=> $pp_TxnDateTime,
-			"pp_BillReference" 		=> "billRef",
-			"pp_Description" 		=> "Description",
+			"pp_Language" 		=> $this->language,
+			"pp_MerchantID" 	=> $this->merchant_id,
+			"pp_SubMerchantID" 	=> "",
+			"pp_Password" 		=> $this->password,
+			"pp_BankID" 		=> "",
+			"pp_ProductID" 		=> "",
+			"pp_TxnRefNo" 		=> $pp_TxnRefNo,
+			"pp_Amount" 		=> $pp_Amount,
+			"pp_TxnCurrency" 	=> $this->currency,
+			"pp_TxnDateTime" 	=> $pp_TxnDateTime,
+			"pp_BillReference" 	=> "billRef",
+			"pp_Description" 	=> "Description",
 			"pp_TxnExpiryDateTime" 	=> $pp_TxnExpiryDateTime,
-			"pp_SecureHash" 		=> "",
-			"ppmpf_1" 				=> "",
-			"ppmpf_2" 				=> "",
-			"ppmpf_3" 				=> "",
-			"ppmpf_4" 				=> "",
-			"ppmpf_5" 				=> "",
-			"pp_MobileNumber" 		=> $form_data['jazz_cash_no'],
-			"pp_CNIC" 				=> $form_data['cnic_digits'],
+			"pp_SecureHash" 	=> "",
+			"ppmpf_1" 		=> "",
+			"ppmpf_2" 		=> "",
+			"ppmpf_3" 		=> "",
+			"ppmpf_4" 		=> "",
+			"ppmpf_5" 		=> "",
+			"pp_MobileNumber" 	=> $form_data['jazz_cash_no'],
+			"pp_CNIC" 		=> $form_data['cnic_digits'],
 		);
 
 		$pp_SecureHash = $this->get_SecureHash($data_array);
