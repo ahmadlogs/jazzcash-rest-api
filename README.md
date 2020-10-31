@@ -1,8 +1,8 @@
 # jazzcash-rest-api
 
-#JAZZCASH payment gateway REST API:
+# JAZZCASH payment gateway REST API:
 
-#####Installation Instructions:
+##### Installation Instructions:
 
 1. Downloaded the code **jazzcash-rest-api**
 2. if you are using xampp copy "jazzcash-rest-api" folder to C:\xampp\htdocs
@@ -16,7 +16,11 @@
 8. Opss I forgot for last 9 step... ENJOY! ;)
 
 Need any Help?
+
 Follow me on
+
 Facebook: facebook.com/ahmadlogs 
+
 twitter : twitter.com/ahmadlogs
+
 youtube : https://www.youtube.com/channel/UCOXYfOHgu-C-UfGyDcu5sYw
