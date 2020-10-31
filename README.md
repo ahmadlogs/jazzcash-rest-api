@@ -7,8 +7,10 @@
 1. Downloaded the code **jazzcash-rest-api**
 
 2. if you are using xampp copy "jazzcash-rest-api" folder to C:\xampp\htdocs
-   or if you are using wamp then  copy "jazzcash-rest-api" folder to C:\wamp\www\
-   or upload it to live server
+
+   **OR** if you are using wamp then  copy "jazzcash-rest-api" folder to C:\wamp\www\
+   
+   **OR** upload it to live server
    
 3. Create Database in your server and Import **jazzcash_db.sql** to your mysql
 
