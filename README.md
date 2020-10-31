@@ -33,8 +33,8 @@
 
 ### Follow me on
 
-Facebook: facebook.com/ahmadlogs 
+Facebook: https://facebook.com/ahmadlogs 
 
-twitter: twitter.com/ahmadlogs
+twitter: https://twitter.com/ahmadlogs
 
-youtube: https://www.youtube.com/channel/UCOXYfOHgu-C-UfGyDcu5sYw
+youtube: https://youtube.com/channel/UCOXYfOHgu-C-UfGyDcu5sYw
