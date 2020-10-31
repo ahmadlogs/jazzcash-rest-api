@@ -55,7 +55,7 @@ class JazzcashApi
 		//------------------------------------------------------
 		
 		//------------------------------------------------------
-		$DateTime 		= new DateTime();
+		$DateTime 	= new DateTime();
 		$pp_TxnDateTime = $DateTime->format('YmdHis');
 		//------------------------------------------------------
 		
@@ -77,7 +77,7 @@ class JazzcashApi
 		//and make it like this 35000
 		$temp_amount 	= $form_data['price']*100;
 		$amount_array 	= explode('.', $temp_amount);
-		$pp_Amount 		= $amount_array[0];
+		$pp_Amount 	= $amount_array[0];
 		//------------------------------------------------------
 
 		//Transaction Array 
