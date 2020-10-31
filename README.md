@@ -1,6 +1,6 @@
 # jazzcash-rest-api
 
-# JAZZCASH payment gateway REST API:
+# JAZZCASH payment gateway REST API Version 2.0:
 
 
 
