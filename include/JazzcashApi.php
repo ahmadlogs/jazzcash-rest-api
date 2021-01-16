@@ -1,19 +1,4 @@
 <?php 
-/* 
--------------------------------------------------------------------------------- 
-| Description of Jazzcash Payment Gateway API V2.0 Library
-|
-| @category: Libraries
-| @author Tauseef Ahmed
-|
-| Last Upate: 31-OCT-2020 05:25 PM
-| Facebook: www.facebook.com/ahmadlogs
-| Twitter: www.twitter.com/ahmadlogs
-| YouTube: https://www.youtube.com/channel/UCOXYfOHgu-C-UfGyDcu5sYw/
-| Blog: https://ahmadlogs.wordpress.com/
- -------------------------------------------------------------------------------- 
- */
-
 
 class JazzcashApi
 { 
@@ -30,23 +15,14 @@ class JazzcashApi
     {
         // Set API key
         $this->merchant_id 		= JAZZCASH_MERCHANT_ID;
-		$this->password 	= JAZZCASH_PASSWORD;
+		$this->password 		= JAZZCASH_PASSWORD;
 		$this->integrity_salt 	= JAZZCASH_INTEGERITY_SALT;
-		$this->currency 	= JAZZCASH_CURRENCY_CODE;
-		$this->language 	= JAZZCASH_LANGUAGE;
-		$this->post_url 	= JAZZCASH_HTTP_POST_URL;
+		$this->currency 		= JAZZCASH_CURRENCY_CODE;
+		$this->language 		= JAZZCASH_LANGUAGE;
+		
     } 
  
    
-/* 
--------------------------------------------------------------------------------- 
-| NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-| 1. This function is use to makes a transaction array 
-| 2. Then it sends it to Jazz Cash Payment Gateway
-| 3. Then it receives response from Payment Gateway
-| NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
- -------------------------------------------------------------------------------- 
- */
     public function createCharge($form_data)
 	{ 
 		//------------------------------------------------------
@@ -72,38 +48,35 @@ class JazzcashApi
 		//------------------------------------------------------
 		
 		//------------------------------------------------------
-		//standard price format i.e. 350.00
-		//remove decimal point from price
-		//and make it like this 35000
 		$temp_amount 	= $form_data['price']*100;
 		$amount_array 	= explode('.', $temp_amount);
 		$pp_Amount 	= $amount_array[0];
 		//------------------------------------------------------
 
-		//Transaction Array 
-		$data_array =  array(
-			"pp_Language" 		=> $this->language,
-			"pp_MerchantID" 	=> $this->merchant_id,
-			"pp_SubMerchantID" 	=> "",
-			"pp_Password" 		=> $this->password,
-			"pp_BankID" 		=> "",
-			"pp_ProductID" 		=> "",
-			"pp_TxnRefNo" 		=> $pp_TxnRefNo,
-			"pp_Amount" 		=> $pp_Amount,
-			"pp_TxnCurrency" 	=> $this->currency,
-			"pp_TxnDateTime" 	=> $pp_TxnDateTime,
-			"pp_BillReference" 	=> "billRef",
-			"pp_Description" 	=> "Description",
-			"pp_TxnExpiryDateTime" 	=> $pp_TxnExpiryDateTime,
-			"pp_SecureHash" 	=> "",
-			"ppmpf_1" 		=> "",
-			"ppmpf_2" 		=> "",
-			"ppmpf_3" 		=> "",
-			"ppmpf_4" 		=> "",
-			"ppmpf_5" 		=> "",
-			"pp_MobileNumber" 	=> $form_data['jazz_cash_no'],
-			"pp_CNIC" 		=> $form_data['cnic_digits'],
-		);
+		$additional_data = array();
+		$additional_data['pp_TxnDateTime'] 		 = $pp_TxnDateTime;
+		$additional_data['pp_TxnExpiryDateTime'] = $pp_TxnExpiryDateTime;
+		$additional_data['pp_TxnRefNo'] 		 = $pp_TxnRefNo;
+		$additional_data['pp_Amount'] 			 = $pp_Amount;
+		
+		
+		if($form_data['paymentMethod'] == "jazzcashMobile")
+		{
+			$this->post_url = JAZZCASH_HTTP_POST_URL;
+			$data_array = $this->get_mobile_payment_array($form_data,$additional_data);
+		}
+		elseif($form_data['paymentMethod'] == "jazzcashCard")
+		{
+			$this->post_url = JAZZCASH_CARD_API_URL;
+			$data_array = $this->get_card_payment_array($form_data,$additional_data);
+
+		}
+		else
+		{
+			return "Please elect a valid Payment Method and try again";
+		}		
+		
+
 
 		$pp_SecureHash = $this->get_SecureHash($data_array);
 		
@@ -181,5 +154,64 @@ class JazzcashApi
 --------------------------------------------------------------------------------
  */
 
+
+	private function get_mobile_payment_array($form_data,$additional_data)
+	{
+		//Transaction Array Mobile
+		$data =  array(
+			"pp_Language" 			=> $this->language,
+			"pp_MerchantID" 		=> $this->merchant_id,
+			"pp_SubMerchantID" 		=> "",
+			"pp_Password" 			=> $this->password,
+			"pp_BankID" 			=> "",
+			"pp_ProductID" 			=> "",
+			"pp_TxnRefNo" 			=> $additional_data['pp_TxnRefNo'],
+			"pp_Amount" 			=> $additional_data['pp_Amount'],
+			"pp_TxnCurrency" 		=> $this->currency,
+			"pp_TxnDateTime" 		=> $additional_data['pp_TxnDateTime'],
+			"pp_BillReference" 		=> "billRef",
+			"pp_Description" 		=> "Description",
+			"pp_TxnExpiryDateTime" 	=> $additional_data['pp_TxnExpiryDateTime'],
+			"pp_SecureHash" 		=> "",
+			"ppmpf_1" 				=> "",
+			"ppmpf_2" 				=> "",
+			"ppmpf_3" 				=> "",
+			"ppmpf_4" 				=> "",
+			"ppmpf_5" 				=> "",
+			"pp_MobileNumber" 		=> $form_data['jazz_cash_no'],
+			"pp_CNIC" 				=> $form_data['cnic_digits'],
+		);
+		
+		
+		return $data;		
+	}
+	
+	private function get_card_payment_array($form_data,$additional_data)
+	{
+		//Transaction Array Card
+		$data =  array(
+			"pp_IsRegisteredCustomer" 		=> "No",
+			"pp_ShouldTokenizeCardNumber" 	=> "No",
+			"pp_CustomerID" 				=> "test",
+			"pp_CustomerEmail" 				=> "test@test.com",
+			"pp_CustomerMobile" 			=> "03222852628",
+			"pp_TxnType" 					=> "MPAY",
+			"pp_TxnRefNo" 					=> $additional_data['pp_TxnRefNo'],
+			"pp_MerchantID" 				=> $this->merchant_id,
+			"pp_Password" 					=> $this->password,
+			"pp_Amount" 					=> $additional_data['pp_Amount'],
+			"pp_TxnCurrency" 				=> $this->currency,
+			"pp_TxnDateTime" 				=> $additional_data['pp_TxnDateTime'],
+			"pp_C3DSecureID" 				=> "",
+			"pp_TxnExpiryDateTime" 			=> $additional_data['pp_TxnExpiryDateTime'],
+			"pp_BillReference" 				=> "billRef",
+			"pp_Description" 				=> "Description of transaction",
+			"pp_CustomerCardNumber" 		=> $form_data['ccNo'],
+			"pp_CustomerCardExpiry" 		=> $form_data['expMonth'].$form_data['expYear'],
+			"pp_CustomerCardCvv" 			=> $form_data['cvv'],
+		);
+		
+		return $data;
+	}	
 }
 ?>
