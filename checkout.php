@@ -30,6 +30,7 @@ if($_POST)
 	//echo '<pre>';
 	//print_r($_POST);
 	//echo '</pre>';
+	//exit();
 	
 	$results = $db->query("SELECT * FROM product WHERE product_id = ".$_POST['product_id']); 
 	$row = $results->fetch_array();
@@ -38,6 +39,12 @@ if($_POST)
 	$data['jazz_cash_no'] =  $_POST['PHONE'];
 	$data['cnic_digits']  =  $_POST['CNIC'];
 	$data['price'] 		  =  $product_price;
+	
+	$data['paymentMethod']=  $_POST['paymentMethod'];
+	$data['ccNo']		  =  $_POST['ccNo'];
+	$data['expMonth']	  =  $_POST['expMonth'];
+	$data['expYear']	  =  $_POST['expYear'];
+	$data['cvv']		  =  $_POST['cvv'];
 
 	$jc_api = new JazzcashApi();
 	
@@ -101,6 +108,32 @@ $image = $row['image'];
 	<!-- JAZZCASH payment form -->
     <!-- ----------------------------------------------------------------------------------------- -->
 	<form action="<?php echo BASE_URL.'checkout.php?product_id='.$product_id;?>" method="POST" id="myCCForm">
+		
+		<div class="row">
+		
+		<div class="col-md-6">
+		<div class="form-group">
+		<label for="paymentMethod" class="small text-muted mb-1"><b>Pay With Mobile</b></label> 
+		<input type="radio" name="paymentMethod" value="jazzcashMobile" checked="" required="" onchange="getValue(this)"> 
+		<i class="fa fa-mobile" style="color:orange;"></i>
+		</div>
+		</div>
+		
+		
+		<div class="col-md-6">
+		<div class="form-group">
+		<label for="paymentMethod" class="small text-muted mb-1"><b>Pay With Card</b></label> 
+		<input type="radio" name="paymentMethod" value="jazzcashCard" checked="" required="" onchange="getValue(this)"> 
+		<i class="fab fa-cc-visa" style="color:navy;"></i>
+		<i class="fab fa-cc-mastercard" style="color:red;"></i>
+		</div>
+		</div>
+		</div>
+		<hr>
+		
+		<!-- NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
+		<div id="mobile_fields">
+		
 		<div class="form-group"> 
 		<label for="PHONE" class="small text-muted mb-1">PHONE NUMBER</label> 
 		<input type="text" name="PHONE" value="03123456789" class="form-control form-control-sm" > 
@@ -110,6 +143,45 @@ $image = $row['image'];
 		<label for="CNIC" class="small text-muted mb-1">LAST 6 DIGITS OF CNIC</label> 
 		<input type="text" name="CNIC" value="345678" class="form-control form-control-sm" > 
 		</div>
+		
+		</div>
+		<!-- NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
+		
+		<!-- NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
+		<div id="card_fields">
+		
+		<div class="form-group"> 
+		<label for="ccNo" class="small text-muted mb-1">CARD NUMBER</label> 
+		<input type="text" name="ccNo" value="5123456789012346" class="form-control form-control-sm" > 
+		</div>
+		
+		<div class="row">
+		
+		<div class="col-md-4">
+		<div class="form-group"> 
+		<label for="expMonth" class="small text-muted mb-1">EXP MONTH</label> 
+		<input type="text" name="expMonth" value="08" class="form-control form-control-sm" > 
+		</div>
+		</div>
+		
+		<div class="col-md-4">
+		<div class="form-group"> 
+		<label for="expYear" class="small text-muted mb-1">EXP YEAR</label> 
+		<input type="text" name="expYear" value="21" class="form-control form-control-sm" > 
+		</div>
+		</div>
+		
+		<div class="col-md-4">
+		<div class="form-group"> 
+		<label for="cvv" class="small text-muted mb-1">CVV</label> 
+		<input type="text" name="cvv" value="123" class="form-control form-control-sm" > 
+		</div>
+		</div>
+		
+		</div>
+		
+		</div>
+		<!-- NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
 		
 		<input type="hidden" name="product_id" value="<?php echo $product_id;?>">
 		
@@ -204,6 +276,27 @@ $image = $row['image'];
 	</div>
   </section>
 
+
+<script type="text/javascript">
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	//handling payment option radio button
+//alert("dddd");
+document.getElementById("mobile_fields").style.display = 'none';
+
+function getValue(x) 
+{
+	if(x.value == 'jazzcashMobile'){
+		document.getElementById("mobile_fields").style.display = 'block';
+		document.getElementById("card_fields").style.display = 'none';
+	}
+	else if(x.value == 'jazzcashCard')
+	{
+		document.getElementById("mobile_fields").style.display = 'none';
+		document.getElementById("card_fields").style.display = 'block';
+	}
+}
+
+</script>
 
 
 <?php include("include/footer.php"); ?>
